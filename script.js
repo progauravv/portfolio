@@ -12,11 +12,11 @@ const skillProgress = document.querySelectorAll('.skill-progress');
 // Typing Animation
 const dynamicText = document.querySelector('.dynamic-text');
 const phrases = [
-    'Securing Digital Infrastructure',
-    'Building Cloud Solutions',
-    'Protecting Against Cyber Threats',
-    'Implementing DevSecOps',
-    'Exploring Blockchain Security'
+    'Building Modern Websites',
+    'Creating Security Solutions',
+    'Developing E-Commerce Platforms',
+    'Optimizing for Search Engines',
+    'Designing User-Friendly Interfaces'
 ];
 let phraseIndex = 0;
 let charIndex = 0;
