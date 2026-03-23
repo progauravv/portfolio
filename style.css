@@ -36,22 +36,9 @@ body {
     overflow-x: hidden;
 }
 
-/* Custom Cursor */
+/* Custom Cursor - Disabled */
 .custom-cursor {
-    position: fixed;
-    width: 20px;
-    height: 20px;
-    border: 2px solid var(--primary-color);
-    border-radius: 50%;
-    pointer-events: none;
-    z-index: 9999;
-    transition: transform 0.2s ease, background-color 0.2s ease;
-    mix-blend-mode: difference;
-}
-
-.custom-cursor.active {
-    transform: scale(1.5);
-    background-color: rgba(0, 212, 255, 0.1);
+    display: none;
 }
 
 /* Scroll Progress Bar */
