@@ -8,7 +8,6 @@ const backToTop = document.querySelector('#backToTop');
 const contactForm = document.querySelector('#contactForm');
 const revealElements = document.querySelectorAll('.reveal');
 const skillProgress = document.querySelectorAll('.skill-progress');
-const customCursor = document.querySelector('.custom-cursor');
 
 // Typing Animation
 const dynamicText = document.querySelector('.dynamic-text');
@@ -49,35 +48,9 @@ function typeWriter() {
     setTimeout(typeWriter, typingSpeed);
 }
 
-// Custom Cursor
+// Custom Cursor - Disabled
 function initCustomCursor() {
-    if (window.innerWidth > 768) {
-        document.addEventListener('mousemove', (e) => {
-            customCursor.style.left = e.clientX + 'px';
-            customCursor.style.top = e.clientY + 'px';
-        });
-
-        document.addEventListener('mousedown', () => {
-            customCursor.classList.add('active');
-        });
-
-        document.addEventListener('mouseup', () => {
-            customCursor.classList.remove('active');
-        });
-
-        // Add hover effect to interactive elements
-        const interactiveElements = document.querySelectorAll('a, button, .btn, input, textarea');
-        interactiveElements.forEach(element => {
-            element.addEventListener('mouseenter', () => {
-                customCursor.classList.add('active');
-            });
-            element.addEventListener('mouseleave', () => {
-                customCursor.classList.remove('active');
-            });
-        });
-    } else {
-        customCursor.style.display = 'none';
-    }
+    // Custom cursor functionality removed
 }
 
 // Mobile Navigation Toggle
@@ -399,9 +372,6 @@ document.addEventListener('DOMContentLoaded', () => {
         typeWriter();
     }
     
-    // Initialize custom cursor
-    initCustomCursor();
-    
     // Initialize intersection observer
     initIntersectionObserver();
     
@@ -430,12 +400,7 @@ window.addEventListener('scroll', () => {
 
 // Window resize event listener
 window.addEventListener('resize', () => {
-    // Reinitialize custom cursor on resize
-    if (window.innerWidth <= 768) {
-        customCursor.style.display = 'none';
-    } else {
-        customCursor.style.display = 'block';
-    }
+    // Custom cursor functionality removed
 });
 
 // Add loading animation
