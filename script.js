@@ -160,6 +160,58 @@ navLinks.forEach(link => {
     });
 });
 
+// Nepal Time Conversion Function
+function convertToNepalTime(utcTimestamp) {
+    // Handle different timestamp formats from Formspree
+    let date;
+    
+    if (typeof utcTimestamp === 'string') {
+        // Remove the 'Z' if present and create Date object
+        date = new Date(utcTimestamp.replace('Z', ''));
+    } else if (utcTimestamp instanceof Date) {
+        date = utcTimestamp;
+    } else {
+        // If it's already a number or other format
+        date = new Date(utcTimestamp);
+    }
+    
+    // Convert to Nepal Time using toLocaleString
+    const nepalTimeOptions = {
+        timeZone: 'Asia/Kathmandu',
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+        hour: 'numeric',
+        minute: '2-digit',
+        hour12: true
+    };
+    
+    return date.toLocaleString('en-US', nepalTimeOptions);
+}
+
+// Alternative function for more control
+function convertToNepalTimeDetailed(utcTimestamp) {
+    const date = new Date(utcTimestamp);
+    
+    // Nepal time is UTC+5:45
+    const nepalOffset = 5.75 * 60 * 60 * 1000; // 5 hours 45 minutes in milliseconds
+    const utcTime = date.getTime() + (date.getTimezoneOffset() * 60 * 1000);
+    const nepalTime = new Date(utcTime + nepalOffset);
+    
+    const months = ['January', 'February', 'March', 'April', 'May', 'June',
+                   'July', 'August', 'September', 'October', 'November', 'December'];
+    
+    const month = months[nepalTime.getMonth()];
+    const day = nepalTime.getDate();
+    const year = nepalTime.getFullYear();
+    const hours = nepalTime.getHours();
+    const minutes = nepalTime.getMinutes().toString().padStart(2, '0');
+    const ampm = hours >= 12 ? 'PM' : 'AM';
+    const displayHours = hours % 12 || 12; // Convert 0 to 12
+    
+    return `${month} ${day}, ${year}, ${displayHours}:${minutes} ${ampm}`;
+}
+
 // Contact Form Validation and Submission
 contactForm.addEventListener('submit', (e) => {
     e.preventDefault();
@@ -200,12 +252,19 @@ contactForm.addEventListener('submit', (e) => {
 });
 
 async function sendEmailWithFormspree(name, email, message) {
+    // Get current UTC timestamp and convert to Nepal time
+    const currentUtcTime = new Date().toISOString();
+    const nepalTime = convertToNepalTime(currentUtcTime);
+    
     const formData = {
         name: name,
         email: email,
         message: message,
         _subject: `Portfolio Contact from ${name}`,
-        _replyto: 'gauravz.me0@gmail.com'
+        _replyto: 'gauravz.me0@gmail.com',
+        submission_time_utc: currentUtcTime,
+        submission_time_nepal: nepalTime,
+        timezone: 'Asia/Kathmandu (UTC+5:45)'
     };
 
     try {
@@ -411,6 +470,29 @@ window.addEventListener('load', () => {
     setTimeout(() => {
         document.body.style.opacity = '1';
     }, 100);
+});
+
+// Utility function to display Nepal time for any Formspree timestamp
+function displayNepalTime(timestampElementId, utcTimestamp) {
+    const element = document.getElementById(timestampElementId);
+    if (element && utcTimestamp) {
+        element.textContent = convertToNepalTime(utcTimestamp);
+    }
+}
+
+// Example usage for displaying Formspree submission times:
+// If you have an element with id "submission-time", you can use:
+// displayNepalTime("submission-time", "2026-03-24T08:39:00Z");
+
+// Auto-convert all elements with class "nepal-time" on page load
+document.addEventListener('DOMContentLoaded', () => {
+    const nepalTimeElements = document.querySelectorAll('.nepal-time');
+    nepalTimeElements.forEach(element => {
+        const utcTime = element.getAttribute('data-utc-time');
+        if (utcTime) {
+            element.textContent = convertToNepalTime(utcTime);
+        }
+    });
 });
 
 // Prevent context menu on images (optional)
