@@ -166,8 +166,8 @@ function convertToNepalTime(utcTimestamp) {
     let date;
     
     if (typeof utcTimestamp === 'string') {
-        // Remove the 'Z' if present and create Date object
-        date = new Date(utcTimestamp.replace('Z', ''));
+        // Keep the 'Z' to ensure it's treated as UTC time
+        date = new Date(utcTimestamp);
     } else if (utcTimestamp instanceof Date) {
         date = utcTimestamp;
     } else {
@@ -260,11 +260,8 @@ async function sendEmailWithFormspree(name, email, message) {
         name: name,
         email: email,
         message: message,
-        _subject: `Portfolio Contact from ${name}`,
         _replyto: 'gauravz.me0@gmail.com',
-        submission_time_utc: currentUtcTime,
-        submission_time_nepal: nepalTime,
-        timezone: 'Asia/Kathmandu (UTC+5:45)'
+        submission_time: nepalTime
     };
 
     try {
